@@ -1,3 +1,42 @@
+== updated by @gersiocb
+== Original from: https://wordpress.org/plugins/wordpress-simple-paypal-shopping-cart/
+
+Only use this repo if you are going to use the item_number on all products as I have not tested whitout it,
+I suppose paypal changed the `item_number` name by `sku` parameter, I have never used it before, 
+so I've updated this plugin in order to have the item_number${} on the webhook from the documentation, may be worth it for someone who wants to update the stock of a product or similar.
+
+### My Changes
+``` 
+// line 484 paypal.php
+$ipn[ 'item_number' . $i ]	 = $item[ 'sku' ];
+```
+ 
+ ```
+ // line 111 wspc-cart-functions.php
+ $item_tpl   = "{name: '%s', quantity: '%d', price: '%s', sku: '%s', currency: '" . $paypal_currency . "'}";
+ // line 117 same file
+ 			$items_list .= sprintf( $item_tpl, esc_js( $item['name'] ), esc_js( $item['quantity'] ), esc_js( $number_formatted_item_price ), esc_js( $item['item_number'] ) ) . ',';
+ ```
+ 
+ That's it, feel free to use it or replicate the change if your item_number variable is empty on the webhook 
+ ```
+ // webhook
+ function wspsc_my_custom_ipn_tasks($ipn_data)
+{
+    //You can write the $ipn_data array's content to a file to see
+    //what paypal sends in the IPN
+		
+    $firstname = $ipn_data['first_name'];
+    $lastname = $ipn_data['last_name'];
+    $email = $ipn_data['payer_email'];
+		// $i = 1;
+		// while ( !empty($ipn_data[‘item_number’.$i.”]) ) {
+		// $id_xxx = $ipn_data[‘item_number’.$i.”];
+		// }
+    //Do something with the data
+
+}
+ ```
 === WordPress Simple Shopping Cart ===
 Contributors: Tips and Tricks HQ, Ruhul Amin, wptipsntricks, mbrsolution, mra13
 Donate link: https://www.tipsandtricks-hq.com
