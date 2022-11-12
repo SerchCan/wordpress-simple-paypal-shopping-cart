@@ -6,7 +6,7 @@ I suppose paypal changed the `item_number` name by `sku` parameter, I have never
 so I've updated this plugin in order to have the item_number${} on the webhook from the documentation, may be worth it for someone who wants to update the stock of a product or similar.
 
 ### My Changes
-``` 
+```
 // line 484 paypal.php
 $ipn[ 'item_number' . $i ]	 = $item[ 'sku' ];
 ```
